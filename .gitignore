@@ -1,0 +1,82 @@
+# =========================================
+# SECURITY (CRITICAL)
+# =========================================
+# Never share environment variables or secrets! 
+# This prevents accidentally leaking API keys, database passwords, or Supabase credentials.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+secret.json
+secrets.json
+scripts/src/test-rpc.ts
+
+# =========================================
+# DEPENDENCIES (HEAVY FILES)
+# =========================================
+# Prevents immense, useless folders that can be generated locally anytime.
+node_modules/
+.pnpm-store/
+
+# =========================================
+# BUILD OUTPUTS (HEAVY/GENERATED FILES)
+# =========================================
+# Build folders contain large compiled bundles that take up lots of space and cause merge conflicts.
+dist/
+dist-ssr/
+build/
+out/
+.vercel/
+.output/
+
+# =========================================
+# LOGS & DIAGNOSTICS (USELESS FILES)
+# =========================================
+# Crash reports and local debugging logs shouldn't be shared.
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.eslintcache
+*.log
+
+# =========================================
+# TESTING (HEAVY FILES)
+# =========================================
+# Generated test reports are not needed in source control.
+coverage/
+.nyc_output/
+
+# =========================================
+# SYSTEM & OS FILES (USELESS FILES)
+# =========================================
+# Annoying hidden files created by operating systems (macOS, Windows).
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# =========================================
+# EDITOR / IDE SETTINGS
+# =========================================
+# Local developer preferences that shouldn't override your team's settings.
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.sublime-workspace
+# =========================================
+# DB & SQL (CRITICAL)
+# =========================================
+*.sql
+supabase/
+migrations/

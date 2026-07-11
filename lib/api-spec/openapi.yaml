@@ -1,0 +1,430 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: Cardiology Medical Dashboard API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: patients
+    description: Patient management
+  - name: appointments
+    description: Appointment management
+  - name: medical-records
+    description: Medical records management
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /patients:
+    get:
+      operationId: listPatients
+      tags: [patients]
+      summary: List patients
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: gender
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of patients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Patient"
+    post:
+      operationId: createPatient
+      tags: [patients]
+      summary: Create patient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePatientBody"
+      responses:
+        "201":
+          description: Created patient
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Patient"
+
+  /patients/{id}:
+    get:
+      operationId: getPatient
+      tags: [patients]
+      summary: Get patient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Patient
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Patient"
+    put:
+      operationId: updatePatient
+      tags: [patients]
+      summary: Update patient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePatientBody"
+      responses:
+        "200":
+          description: Updated patient
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Patient"
+    delete:
+      operationId: deletePatient
+      tags: [patients]
+      summary: Delete patient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  /appointments:
+    get:
+      operationId: listAppointments
+      tags: [appointments]
+      summary: List appointments
+      parameters:
+        - name: date
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of appointments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Appointment"
+    post:
+      operationId: createAppointment
+      tags: [appointments]
+      summary: Create appointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAppointmentBody"
+      responses:
+        "201":
+          description: Created appointment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+
+  /appointments/{id}:
+    put:
+      operationId: updateAppointment
+      tags: [appointments]
+      summary: Update appointment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAppointmentBody"
+      responses:
+        "200":
+          description: Updated appointment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+    delete:
+      operationId: deleteAppointment
+      tags: [appointments]
+      summary: Delete appointment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  /medical-records:
+    get:
+      operationId: listMedicalRecords
+      tags: [medical-records]
+      summary: List medical records
+      parameters:
+        - name: patientId
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of medical records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MedicalRecord"
+    post:
+      operationId: createMedicalRecord
+      tags: [medical-records]
+      summary: Create medical record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMedicalRecordBody"
+      responses:
+        "201":
+          description: Created medical record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MedicalRecord"
+
+  /medical-records/{id}:
+    delete:
+      operationId: deleteMedicalRecord
+      tags: [medical-records]
+      summary: Delete medical record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  /dashboard/stats:
+    get:
+      operationId: getDashboardStats
+      tags: [health]
+      summary: Get dashboard statistics
+      responses:
+        "200":
+          description: Dashboard stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    Patient:
+      type: object
+      properties:
+        id:
+          type: string
+        full_name:
+          type: string
+        age:
+          type: integer
+        gender:
+          type: string
+        medical_history:
+          type: string
+        diagnosis:
+          type: string
+        medications:
+          type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+      required:
+        - id
+        - full_name
+        - age
+        - gender
+        - created_at
+
+    CreatePatientBody:
+      type: object
+      properties:
+        full_name:
+          type: string
+        age:
+          type: integer
+        gender:
+          type: string
+        medical_history:
+          type: string
+        diagnosis:
+          type: string
+        medications:
+          type: string
+      required:
+        - full_name
+        - age
+        - gender
+
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: string
+        patient_id:
+          type: string
+        doctor_id:
+          type: string
+        date:
+          type: string
+        status:
+          type: string
+        notes:
+          type: string
+        patient_name:
+          type: string
+      required:
+        - id
+        - patient_id
+        - doctor_id
+        - date
+        - status
+
+    CreateAppointmentBody:
+      type: object
+      properties:
+        patient_id:
+          type: string
+        date:
+          type: string
+        status:
+          type: string
+        notes:
+          type: string
+      required:
+        - patient_id
+        - date
+        - status
+
+    UpdateAppointmentBody:
+      type: object
+      properties:
+        status:
+          type: string
+        notes:
+          type: string
+        date:
+          type: string
+
+    MedicalRecord:
+      type: object
+      properties:
+        id:
+          type: string
+        patient_id:
+          type: string
+        file_url:
+          type: string
+        description:
+          type: string
+        uploaded_at:
+          type: string
+        patient_name:
+          type: string
+      required:
+        - id
+        - patient_id
+        - file_url
+        - uploaded_at
+
+    CreateMedicalRecordBody:
+      type: object
+      properties:
+        patient_id:
+          type: string
+        file_url:
+          type: string
+        description:
+          type: string
+      required:
+        - patient_id
+        - file_url
+
+    DashboardStats:
+      type: object
+      properties:
+        total_patients:
+          type: integer
+        appointments_today:
+          type: integer
+        pending_appointments:
+          type: integer
+        completed_appointments:
+          type: integer
+      required:
+        - total_patients
+        - appointments_today
+        - pending_appointments
+        - completed_appointments

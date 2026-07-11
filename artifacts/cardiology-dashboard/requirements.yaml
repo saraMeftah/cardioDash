@@ -1,0 +1,17 @@
+packages:
+  "@supabase/supabase-js": "Direct DB and Auth access as per implementation notes"
+  "date-fns": "Date formatting and manipulation"
+  "recharts": "Beautiful dashboard charts"
+  "framer-motion": "Smooth page transitions and micro-interactions"
+  "clsx": "Utility for conditional classes"
+  "tailwind-merge": "Utility for merging tailwind classes"
+  "lucide-react": "Clean icons for the UI"
+
+images:
+  - path: "artifacts/cardiology-dashboard/public/images/medical-hero.png"
+    description: "Abstract minimal medical background, clean clinical blue and white 3d glassmorphism elements like DNA strands and medical crosses"
+    aspect_ratio: "16:9"
+
+notes:
+  - Uses direct Supabase JS client for all data operations instead of /api routes.
+  - Implements complete authentication, layout, and CRUD flows.

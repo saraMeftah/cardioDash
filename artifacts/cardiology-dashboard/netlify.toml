@@ -1,0 +1,66 @@
+# =============================================================================
+# CardioDash — Netlify Deployment Configuration
+# =============================================================================
+# Place this file in the root of the cardiology-dashboard package.
+# Netlify reads it automatically on deployment.
+# =============================================================================
+
+[build]
+  publish = "dist/public"
+  command = "pnpm run build"
+
+# ---------------------------------------------------------------------------
+# Security Headers — applied to ALL routes
+# ---------------------------------------------------------------------------
+
+[[headers]]
+  for = "/*"
+
+  [headers.values]
+    # Prevent clickjacking: block this app from being embedded in iframes
+    X-Frame-Options = "DENY"
+
+    # Prevent MIME-sniffing: browser must respect declared content types
+    X-Content-Type-Options = "nosniff"
+
+    # Restrict Referrer: only send origin (no path/query) on cross-origin requests
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+    # Disable dangerous browser features (camera, mic, geolocation etc.)
+    Permissions-Policy = "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+
+    # HSTS: Force HTTPS for 1 year, include subdomains, allow preloading
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+
+    # Content Security Policy
+    # Notes on specific directives:
+    #  - script-src: 'unsafe-inline' required for Vite's hot-module replacement.
+    #    In PRODUCTION builds, Vite inlines critical scripts, so this is needed.
+    #    cdn.jsdelivr.net + cdnjs.cloudflare.com allow Tesseract/PDF.js workers.
+    #    TODO (HIGH-06): Once those are bundled locally, remove these CDN entries.
+    #  - worker-src blob: required for Tesseract.js web workers.
+    #  - connect-src: must allow Supabase project URL for API/WebSocket calls.
+    #    Replace <YOUR-PROJECT-ID> with your actual Supabase project subdomain.
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://esm.sh;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: blob: https://*.supabase.co;
+      connect-src 'self' https://*.supabase.co wss://*.supabase.co;
+      worker-src 'self' blob:;
+      frame-src 'none';
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      upgrade-insecure-requests;
+    """
+
+# ---------------------------------------------------------------------------
+# SPA Routing: All 404s redirect to index.html (client-side routing)
+# ---------------------------------------------------------------------------
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

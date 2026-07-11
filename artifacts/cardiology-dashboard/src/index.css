@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+
+@theme inline {
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+
+  --color-teal: hsl(var(--teal));
+  --color-teal-foreground: hsl(var(--teal-foreground));
+  --color-navy: hsl(var(--navy));
+  --color-navy-foreground: hsl(var(--navy-foreground));
+}
+
+:root {
+  /* Premium Clinical Light Theme */
+  --background: 210 25% 97%;
+  --foreground: 213 70% 14%;
+  
+  --border: 214 24% 88%;
+  --input: 214 24% 88%;
+  --ring: 213 70% 22%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 213 70% 14%;
+
+  /* Deep Navy Primary */
+  --primary: 213 70% 22%;
+  --primary-foreground: 210 40% 98%;
+
+  --secondary: 210 30% 94%;
+  --secondary-foreground: 213 70% 22%;
+
+  --muted: 210 30% 94%;
+  --muted-foreground: 215 18% 48%;
+
+  /* Teal Accent */
+  --accent: 176 57% 44%;
+  --accent-foreground: 210 40% 98%;
+
+  /* Alert Red */
+  --destructive: 358 76% 56%;
+  --destructive-foreground: 210 40% 98%;
+
+  /* Sidebar: Deep navy */
+  --sidebar: 213 70% 14%;
+  --sidebar-foreground: 210 30% 90%;
+  --sidebar-border: 213 40% 20%;
+  --sidebar-accent: 213 45% 22%;
+  --sidebar-accent-foreground: 210 40% 98%;
+
+  --teal: 176 57% 44%;
+  --teal-foreground: 210 40% 98%;
+  --navy: 213 70% 22%;
+  --navy-foreground: 210 40% 98%;
+  
+  --radius: 0.875rem;
+}
+
+.dark {
+  --background: 213 40% 8%;
+  --foreground: 210 30% 94%;
+  
+  --border: 213 30% 18%;
+  --input: 213 30% 18%;
+  --ring: 176 57% 44%;
+
+  --card: 213 35% 11%;
+  --card-foreground: 210 30% 94%;
+
+  --primary: 176 57% 44%;
+  --primary-foreground: 213 70% 8%;
+
+  --secondary: 213 35% 15%;
+  --secondary-foreground: 210 30% 90%;
+
+  --muted: 213 35% 15%;
+  --muted-foreground: 215 18% 55%;
+
+  --accent: 176 57% 44%;
+  --accent-foreground: 213 70% 8%;
+
+  --destructive: 358 76% 56%;
+  --destructive-foreground: 210 40% 98%;
+
+  --sidebar: 213 45% 6%;
+  --sidebar-foreground: 210 30% 88%;
+  --sidebar-border: 213 30% 14%;
+  --sidebar-accent: 213 35% 12%;
+  --sidebar-accent-foreground: 176 57% 44%;
+
+  --teal: 176 57% 44%;
+  --teal-foreground: 213 70% 8%;
+  --navy: 213 70% 14%;
+  --navy-foreground: 210 40% 98%;
+}
+
+* {
+  box-sizing: border-box;
+  border-color: hsl(var(--border));
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
+
+/* ECG Animation */
+@keyframes ecg-draw {
+  0%   { stroke-dashoffset: 1000; opacity: 0.8; }
+  50%  { opacity: 1; }
+  100% { stroke-dashoffset: -1000; opacity: 0; }
+}
+
+.ecg-line {
+  stroke-dasharray: 1000;
+  animation: ecg-draw 3s linear infinite;
+}
+
+/* Pulse dot */
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+/* Shimmer skeleton */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted-foreground) / 0.12) 50%, hsl(var(--muted)) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.12);
+}
